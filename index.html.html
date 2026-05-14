@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MediCare+ | Digital Healthcare</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <style>
+    :root {
+      --teal:   #00c9a7;
+      --navy:   #0a1628;
+      --mid:    #0d2147;
+      --card:   #112060;
+      --accent: #00e5ff;
+      --danger: #ff4d6d;
+      --white:  #f0f8ff;
+      --text:   #b8d4f0;
+      --grad:   linear-gradient(135deg,#00c9a7,#00e5ff);
+    }
+    *{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth;}
+    body{font-family:'Outfit',sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;}
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar{width:6px;}
+    ::-webkit-scrollbar-track{background:var(--navy);}
+    ::-webkit-scrollbar-thumb{background:var(--teal);border-radius:3px;}
+
+    /* ── NAVBAR ── */
+    nav{
+      position:fixed;top:0;width:100%;z-index:1000;
+      background:rgba(10,22,40,0.85);backdrop-filter:blur(18px);
+      border-bottom:1px solid rgba(0,201,167,0.2);
+      padding:14px 0;transition:all .3s;
+    }
+    nav.scrolled{padding:8px 0;box-shadow:0 4px 30px rgba(0,201,167,0.15);}
+    .navbar-brand{
+      font-weight:900;font-size:1.7rem;
+      background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      letter-spacing:-1px;
+    }
+    .nav-link{color:var(--text)!important;font-weight:600;letter-spacing:.5px;transition:.3s;position:relative;padding:6px 14px!important;}
+    .nav-link::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--grad);transition:.3s;}
+    .nav-link:hover::after,.nav-link.active::after{width:70%;}
+    .nav-link:hover{color:var(--accent)!important;}
+
+    /* ── HERO ── */
+    #home{
+      min-height:100vh;display:flex;align-items:center;
+      background:radial-gradient(ellipse at 20% 50%,#0d2f60 0%,var(--navy) 65%),
+                 url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1400&q=80') center/cover no-repeat;
+      background-blend-mode:multiply;
+      padding-top:90px;position:relative;overflow:hidden;
+    }
+    #home::before{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(circle at 70% 40%,rgba(0,201,167,.12) 0%,transparent 60%);
+    }
+    .hero-badge{
+      display:inline-block;padding:6px 18px;border-radius:50px;
+      background:rgba(0,201,167,.15);border:1px solid var(--teal);
+      color:var(--teal);font-size:.85rem;font-weight:600;letter-spacing:1px;
+      margin-bottom:24px;animation:fadeDown .8s ease forwards;
+    }
+    .hero-title{
+      font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:1.05;
+      animation:fadeUp .9s .1s ease both;
+    }
+    .hero-title span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .hero-sub{font-size:1.15rem;color:var(--text);max-width:520px;animation:fadeUp .9s .2s ease both;line-height:1.8;}
+    .btn-primary-custom{
+      background:var(--grad);border:none;padding:14px 34px;border-radius:50px;
+      font-weight:700;font-size:1rem;color:#000;transition:.3s;
+      box-shadow:0 8px 30px rgba(0,201,167,.35);
+      transform-style:preserve-3d;
+    }
+    .btn-primary-custom:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 16px 40px rgba(0,201,167,.5);}
+    .btn-outline-custom{
+      border:2px solid var(--teal);padding:13px 30px;border-radius:50px;
+      font-weight:700;color:var(--teal);background:transparent;transition:.3s;
+    }
+    .btn-outline-custom:hover{background:var(--teal);color:#000;}
+
+    /* ── 3D FLOATING CARD ── */
+    .hero-3d-wrap{perspective:900px;animation:fadeRight .9s .3s ease both;}
+    .hero-card{
+      background:linear-gradient(145deg,#112060,#0d2147);
+      border:1px solid rgba(0,201,167,.25);border-radius:24px;
+      padding:32px;transform:rotateY(-14deg) rotateX(5deg);
+      box-shadow:20px 20px 60px rgba(0,0,0,.5),-4px -4px 20px rgba(0,201,167,.08);
+      transition:transform .5s;position:relative;overflow:hidden;
+    }
+    .hero-card::before{
+      content:'';position:absolute;top:-50%;right:-50%;
+      width:200%;height:200%;
+      background:radial-gradient(circle,rgba(0,201,167,.06),transparent 60%);
+      animation:rotate 8s linear infinite;
+    }
+    .hero-card:hover{transform:rotateY(-4deg) rotateX(2deg) scale(1.02);}
+    .stat-row{display:flex;gap:24px;flex-wrap:wrap;margin-top:20px;}
+    .stat-box{
+      flex:1;min-width:90px;background:rgba(0,201,167,.08);
+      border:1px solid rgba(0,201,167,.2);border-radius:14px;
+      padding:16px 12px;text-align:center;
+      transition:.3s;cursor:default;
+    }
+    .stat-box:hover{background:rgba(0,201,167,.18);transform:translateY(-4px);}
+    .stat-box .num{font-size:1.8rem;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .stat-box .lbl{font-size:.75rem;color:var(--text);margin-top:4px;}
+    .pulse-dot{
+      width:12px;height:12px;border-radius:50%;background:var(--teal);
+      display:inline-block;margin-right:8px;
+      animation:pulse 1.5s infinite;
+    }
+
+    /* ── SECTION COMMON ── */
+    section{padding:100px 0;}
+    .section-badge{
+      display:inline-block;padding:5px 16px;border-radius:50px;
+      background:rgba(0,201,167,.1);border:1px solid rgba(0,201,167,.3);
+      color:var(--teal);font-size:.8rem;font-weight:700;letter-spacing:1.5px;
+      text-transform:uppercase;margin-bottom:14px;
+    }
+    .section-title{font-size:clamp(2rem,4vw,3rem);font-weight:900;line-height:1.15;}
+    .section-title span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .section-sub{color:var(--text);font-size:1.05rem;max-width:540px;line-height:1.8;}
+
+    /* ── ABOUT ── */
+    #about{background:linear-gradient(180deg,var(--navy),#081020);}
+    .about-img-wrap{perspective:700px;}
+    .about-img{
+      border-radius:20px;width:100%;
+      transform:rotateY(8deg) rotateX(-4deg);
+      box-shadow:30px 30px 60px rgba(0,0,0,.6);
+      transition:.5s;border:2px solid rgba(0,201,167,.2);
+    }
+    .about-img:hover{transform:rotateY(2deg) rotateX(-1deg) scale(1.02);}
+    .feature-pill{
+      display:inline-flex;align-items:center;gap:10px;
+      background:rgba(0,201,167,.08);border:1px solid rgba(0,201,167,.2);
+      border-radius:50px;padding:10px 20px;font-size:.9rem;font-weight:600;
+      margin:6px 4px;transition:.3s;
+    }
+    .feature-pill:hover{background:rgba(0,201,167,.18);transform:translateY(-3px);}
+    .feature-pill i{color:var(--teal);}
+
+    /* ── SERVICES ── */
+    #services{background:#081020;}
+    .service-card{
+      background:linear-gradient(145deg,#112060,#0d1f50);
+      border:1px solid rgba(0,201,167,.15);border-radius:20px;
+      padding:36px 28px;transition:.4s;cursor:default;
+      position:relative;overflow:hidden;height:100%;
+      transform-style:preserve-3d;
+    }
+    .service-card::after{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(135deg,rgba(0,201,167,.05),transparent);
+      opacity:0;transition:.4s;
+    }
+    .service-card:hover{transform:translateY(-12px) rotateX(4deg);border-color:rgba(0,201,167,.4);box-shadow:0 30px 60px rgba(0,0,0,.4);}
+    .service-card:hover::after{opacity:1;}
+    .service-icon{
+      width:64px;height:64px;border-radius:16px;
+      background:rgba(0,201,167,.15);border:1px solid rgba(0,201,167,.3);
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.6rem;color:var(--teal);margin-bottom:22px;transition:.4s;
+    }
+    .service-card:hover .service-icon{background:var(--teal);color:#000;transform:scale(1.1) rotate(-5deg);}
+    .service-card h5{font-weight:800;font-size:1.2rem;margin-bottom:12px;}
+    .service-card p{color:var(--text);font-size:.92rem;line-height:1.8;}
+    .service-tag{
+      display:inline-block;padding:4px 12px;border-radius:50px;
+      background:rgba(0,201,167,.1);color:var(--teal);font-size:.75rem;font-weight:600;
+      margin-top:16px;
+    }
+
+    /* ── FORMS ── */
+    #login,#register,#feedback{background:#060f1e;}
+    .form-section{
+      background:linear-gradient(145deg,#0d1f50,#112060);
+      border:1px solid rgba(0,201,167,.2);border-radius:24px;
+      padding:48px 40px;position:relative;overflow:hidden;
+      transform-style:preserve-3d;
+      box-shadow:0 30px 80px rgba(0,0,0,.5);
+      transition:.4s;
+    }
+    .form-section:hover{box-shadow:0 40px 100px rgba(0,201,167,.1);}
+    .form-section::before{
+      content:'';position:absolute;top:-100px;right:-100px;
+      width:300px;height:300px;border-radius:50%;
+      background:radial-gradient(circle,rgba(0,201,167,.08),transparent);
+    }
+    .form-title{font-size:1.8rem;font-weight:900;margin-bottom:8px;}
+    .form-title span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    label{font-weight:600;font-size:.88rem;color:var(--text);margin-bottom:6px;display:block;}
+    .form-control{
+      background:rgba(255,255,255,.04)!important;border:1.5px solid rgba(0,201,167,.2)!important;
+      border-radius:12px!important;color:var(--white)!important;
+      padding:13px 18px!important;font-size:.95rem!important;transition:.3s!important;
+    }
+    .form-control:focus{
+      border-color:var(--teal)!important;
+      box-shadow:0 0 0 3px rgba(0,201,167,.15)!important;
+      background:rgba(0,201,167,.04)!important;
+    }
+    .form-control::placeholder{color:rgba(176,212,240,.4)!important;}
+    .input-icon{position:relative;}
+    .input-icon i{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--teal);font-size:.9rem;z-index:2;}
+    .input-icon .form-control{padding-left:44px!important;}
+    .input-icon-top i{position:absolute;left:16px;top:46px;color:var(--teal);font-size:.9rem;z-index:2;}
+    .input-icon-top .form-control{padding-left:44px!important;}
+    .btn-submit{
+      width:100%;padding:14px;border-radius:12px;
+      background:var(--grad);border:none;
+      font-weight:800;font-size:1rem;color:#000;
+      transition:.3s;box-shadow:0 8px 30px rgba(0,201,167,.3);
+    }
+    .btn-submit:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,201,167,.5);}
+    .error-msg{color:var(--danger);font-size:.8rem;margin-top:5px;display:none;font-weight:600;}
+    .success-banner{
+      display:none;background:rgba(0,201,167,.15);border:1px solid var(--teal);
+      border-radius:12px;padding:16px 20px;text-align:center;
+      color:var(--teal);font-weight:700;margin-top:16px;
+    }
+
+    /* ── DOCTORS ── */
+    #doctors{background:linear-gradient(180deg,#081020,var(--navy));}
+    .doctor-card{
+      background:linear-gradient(145deg,#112060,#0d1f50);
+      border:1px solid rgba(0,201,167,.18);border-radius:22px;
+      padding:32px 24px;text-align:center;
+      transition:.4s;cursor:default;
+      position:relative;overflow:hidden;height:100%;
+    }
+    .doctor-card::before{
+      content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);
+      width:180px;height:180px;border-radius:50%;
+      background:radial-gradient(circle,rgba(0,201,167,.08),transparent);
+      transition:.4s;
+    }
+    .doctor-card:hover{transform:translateY(-12px);border-color:rgba(0,201,167,.45);box-shadow:0 30px 60px rgba(0,0,0,.4);}
+    .doctor-card:hover::before{background:radial-gradient(circle,rgba(0,201,167,.16),transparent);}
+    .doctor-avatar{
+      width:110px;height:110px;border-radius:50%;
+      border:3px solid rgba(0,201,167,.4);
+      object-fit:cover;margin:0 auto 18px;display:block;
+      transition:.4s;
+      box-shadow:0 0 0 6px rgba(0,201,167,.08);
+    }
+    .doctor-card:hover .doctor-avatar{border-color:var(--teal);box-shadow:0 0 0 8px rgba(0,201,167,.15);}
+    .doctor-avatar-placeholder{
+      width:110px;height:110px;border-radius:50%;
+      border:3px solid rgba(0,201,167,.4);
+      background:linear-gradient(135deg,rgba(0,201,167,.2),rgba(0,229,255,.1));
+      display:flex;align-items:center;justify-content:center;
+      margin:0 auto 18px;font-size:2.4rem;color:var(--teal);
+      transition:.4s;box-shadow:0 0 0 6px rgba(0,201,167,.08);
+    }
+    .doctor-card:hover .doctor-avatar-placeholder{border-color:var(--teal);box-shadow:0 0 0 8px rgba(0,201,167,.15);}
+    .doctor-name{font-size:1.15rem;font-weight:800;margin-bottom:4px;}
+    .doctor-spec{
+      display:inline-block;padding:5px 16px;border-radius:50px;
+      background:rgba(0,201,167,.12);border:1px solid rgba(0,201,167,.3);
+      color:var(--teal);font-size:.78rem;font-weight:700;letter-spacing:.8px;
+      text-transform:uppercase;margin-bottom:14px;
+    }
+    .doctor-desc{color:var(--text);font-size:.88rem;line-height:1.75;margin-bottom:16px;}
+    .doctor-meta{
+      display:flex;justify-content:center;gap:18px;
+      padding-top:16px;border-top:1px solid rgba(0,201,167,.12);
+    }
+    .doctor-meta-item{text-align:center;}
+    .doctor-meta-item .val{font-weight:800;font-size:1rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .doctor-meta-item .key{font-size:.72rem;color:var(--text);margin-top:2px;}
+    .doctor-stars{color:#f5c842;font-size:.85rem;margin-bottom:4px;}
+
+    /* ── FOOTER ── */
+    footer{
+      background:#030a16;border-top:1px solid rgba(0,201,167,.15);
+      padding:50px 0 28px;
+    }
+    .footer-logo{font-size:1.8rem;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .footer-link{color:var(--text);text-decoration:none;transition:.3s;font-size:.9rem;display:block;margin-bottom:8px;}
+    .footer-link:hover{color:var(--teal);padding-left:6px;}
+    .social-btn{
+      width:40px;height:40px;border-radius:50%;border:1.5px solid rgba(0,201,167,.3);
+      display:inline-flex;align-items:center;justify-content:center;
+      color:var(--text);font-size:.9rem;transition:.3s;margin:4px;text-decoration:none;
+    }
+    .social-btn:hover{background:var(--teal);color:#000;border-color:var(--teal);}
+
+    /* ── FLOATING PARTICLES ── */
+    .particle{
+      position:absolute;border-radius:50%;
+      background:radial-gradient(circle,rgba(0,201,167,.5),transparent);
+      animation:float linear infinite;pointer-events:none;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,201,167,.4)}50%{box-shadow:0 0 0 8px rgba(0,201,167,0)}}
+    @keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    @keyframes float{0%{transform:translateY(0) scale(1);opacity:.6}50%{transform:translateY(-40px) scale(1.1);opacity:.3}100%{transform:translateY(0) scale(1);opacity:.6}}
+    @keyframes spin3d{0%{transform:rotateY(0deg)}100%{transform:rotateY(360deg)}}
+
+    /* ── SCROLL REVEAL ── */
+    .reveal{opacity:0;transform:translateY(40px);transition:opacity .7s,transform .7s;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+
+    /* ── COUNTER ── */
+    .counter-section{
+      background:linear-gradient(135deg,rgba(0,201,167,.08),rgba(0,229,255,.04));
+      border:1px solid rgba(0,201,167,.15);border-radius:24px;
+      padding:48px;margin:60px 0;
+    }
+    .counter-item{text-align:center;}
+    .counter-num{font-size:3rem;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
+    .counter-label{color:var(--text);font-size:.9rem;font-weight:600;margin-top:6px;}
+
+    /* RESPONSIVE */
+    @media(max-width:768px){
+      .form-section{padding:32px 20px;}
+      .hero-card{transform:none;margin-top:40px;}
+      .about-img{transform:none;}
+    }
+
+    /* divider */
+    .section-divider{
+      width:60px;height:4px;border-radius:2px;
+      background:var(--grad);margin-bottom:28px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- PARTICLES -->
+<div id="particles" style="position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;"></div>
+
+<!-- NAVBAR -->
+<nav id="navbar" class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="#home">
+      <i class="fa-solid fa-heart-pulse me-2" style="font-size:1.3rem;"></i>MediCare+
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" style="border-color:rgba(0,201,167,.4)">
+      <span style="color:var(--teal);font-size:1.2rem;"><i class="fa-solid fa-bars"></i></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto gap-2">
+        <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="#doctors">Doctors</a></li>
+        <li class="nav-item"><a class="nav-link" href="#login">Login</a></li>
+        <li class="nav-item"><a class="nav-link" href="#register">Register</a></li>
+        <li class="nav-item"><a class="nav-link" href="#feedback">Feedback</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════ HOME ═══════════════ -->
+<section id="home">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <div class="hero-badge"><span class="pulse-dot"></span>Trusted by 50,000+ Patients</div>
+        <h1 class="hero-title">Your Health,<br>Our <span>Priority</span><br>Always.</h1>
+        <p class="hero-sub mt-4">MediCare+ brings world-class healthcare to your fingertips. Book appointments, access health tips, and connect with top doctors — all in one place.</p>
+        <div class="d-flex gap-3 flex-wrap mt-5">
+          <button class="btn-primary-custom" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">
+            <i class="fa-solid fa-calendar-check me-2"></i>Book Appointment
+          </button>
+          <button class="btn-outline-custom" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+            Learn More <i class="fa-solid fa-arrow-right ms-2"></i>
+          </button>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="hero-3d-wrap">
+          <div class="hero-card">
+            <div class="d-flex align-items-center gap-3 mb-20" style="margin-bottom:20px">
+              <div style="width:48px;height:48px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;">
+                <i class="fa-solid fa-stethoscope" style="color:#000;font-size:1.2rem;"></i>
+              </div>
+              <div>
+                <div style="font-weight:800;font-size:1rem;">Patient Dashboard</div>
+                <div style="color:var(--text);font-size:.8rem;">Live health monitoring</div>
+              </div>
+            </div>
+            <div style="background:rgba(0,201,167,.07);border-radius:12px;padding:16px;margin-bottom:16px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <span style="color:var(--text);font-size:.85rem;">Heart Rate</span>
+                <span style="color:var(--teal);font-weight:700;">72 BPM</span>
+              </div>
+              <div style="background:rgba(255,255,255,.08);border-radius:50px;height:6px;overflow:hidden;">
+                <div style="width:72%;height:100%;background:var(--grad);border-radius:50px;animation:pulse 2s infinite;"></div>
+              </div>
+            </div>
+            <div style="background:rgba(0,201,167,.07);border-radius:12px;padding:16px;margin-bottom:16px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <span style="color:var(--text);font-size:.85rem;">Blood Oxygen</span>
+                <span style="color:var(--accent);font-weight:700;">98%</span>
+              </div>
+              <div style="background:rgba(255,255,255,.08);border-radius:50px;height:6px;overflow:hidden;">
+                <div style="width:98%;height:100%;background:linear-gradient(90deg,#00c9a7,#00e5ff);border-radius:50px;"></div>
+              </div>
+            </div>
+            <div class="stat-row">
+              <div class="stat-box"><div class="num">500+</div><div class="lbl">Doctors</div></div>
+              <div class="stat-box"><div class="num">24/7</div><div class="lbl">Support</div></div>
+              <div class="stat-box"><div class="num">98%</div><div class="lbl">Satisfaction</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ ABOUT ═══════════════ -->
+<section id="about">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-5 reveal">
+        <div class="about-img-wrap">
+          <img src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=600&q=80" alt="Healthcare" class="about-img"/>
+        </div>
+      </div>
+      <div class="col-lg-7 reveal">
+        <div class="section-badge"><i class="fa-solid fa-circle-info me-2"></i>About Us</div>
+        <div class="section-divider"></div>
+        <h2 class="section-title">Revolutionizing <span>Healthcare</span> for Everyone</h2>
+        <p class="section-sub mt-4">MediCare+ is a digital healthcare platform designed to make medical services accessible, affordable, and efficient for every individual — regardless of where they live.</p>
+        <p class="section-sub mt-3">We bridge the gap between patients and healthcare professionals through technology, providing real-time consultations, health tracking, emergency info, and personalized care plans.</p>
+        <div class="mt-4 d-flex flex-wrap">
+          <span class="feature-pill"><i class="fa-solid fa-check-circle"></i>Verified Doctors</span>
+          <span class="feature-pill"><i class="fa-solid fa-shield-halved"></i>Secure & Private</span>
+          <span class="feature-pill"><i class="fa-solid fa-clock"></i>24/7 Available</span>
+          <span class="feature-pill"><i class="fa-solid fa-mobile-screen"></i>Mobile Friendly</span>
+          <span class="feature-pill"><i class="fa-solid fa-globe"></i>Multilingual</span>
+        </div>
+
+        <div class="counter-section reveal">
+          <div class="row g-4 text-center">
+            <div class="col-3"><div class="counter-num" data-target="500">0</div><div class="counter-label">Doctors</div></div>
+            <div class="col-3"><div class="counter-num" data-target="50000">0</div><div class="counter-label">Patients</div></div>
+            <div class="col-3"><div class="counter-num" data-target="98">0</div><div class="counter-label">% Success</div></div>
+            <div class="col-3"><div class="counter-num" data-target="15">0</div><div class="counter-label">Cities</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SERVICES ═══════════════ -->
+<section id="services">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <div class="section-badge"><i class="fa-solid fa-briefcase-medical me-2"></i>Our Services</div>
+      <div class="section-divider mx-auto"></div>
+      <h2 class="section-title">What <span>MediCare+</span> Offers</h2>
+      <p class="section-sub mx-auto mt-3">Comprehensive healthcare features built around your needs.</p>
+    </div>
+    <div class="row g-4">
+      <!-- Service Cards -->
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="service-card">
+          <div class="service-icon"><i class="fa-solid fa-calendar-check"></i></div>
+          <h5>Online Appointments</h5>
+          <p>Book doctor appointments instantly from home. Choose your preferred specialist, date, and time slot without waiting in queues.</p>
+          <span class="service-tag"><i class="fa-solid fa-bolt me-1"></i>Instant Booking</span>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="service-card">
+          <div class="service-icon"><i class="fa-solid fa-video"></i></div>
+          <h5>Video Consultation</h5>
+          <p>Connect face-to-face with certified doctors via HD video call. Get prescriptions and medical advice from the comfort of your home.</p>
+          <span class="service-tag"><i class="fa-solid fa-wifi me-1"></i>Live Session</span>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="service-card">
+          <div class="service-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+          <h5>Health Monitoring</h5>
+          <p>Track vital signs like heart rate, blood pressure, and oxygen level in real time. Get personalized health insights and alerts.</p>
+          <span class="service-tag"><i class="fa-solid fa-chart-line me-1"></i>Real-time</span>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="service-card">
+          <div class="service-icon"><i class="fa-solid fa-truck-medical"></i></div>
+          <h5>Emergency Help</h5>
+          <p>One-tap emergency SOS to alert nearby hospitals and ambulances. Get the fastest medical response when it matters most.</p>
+          <span class="service-tag"><i class="fa-solid fa-siren-on me-1"></i>SOS Ready</span>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="service-card">
+          <div class="service-icon"><i class="fa-solid fa-pills"></i></div>
+          <h5>Medicine Reminders</h5>
+          <p>Never miss a dose with smart medicine reminders. Set custom schedules, get alerts, and track your medication history.</p>
+          <span class="service-tag"><i class="fa-solid fa-bell me-1"></i>Smart Alerts</span>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="service-card">
+          <div class="service-icon"><i class="fa-solid fa-file-medical"></i></div>
+          <h5>Medical Records</h5>
+          <p>Store and access all your health reports, prescriptions, and lab results securely. Share instantly with any doctor worldwide.</p>
+          <span class="service-tag"><i class="fa-solid fa-lock me-1"></i>Encrypted</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ DOCTORS ═══════════════ -->
+<section id="doctors">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <div class="section-badge"><i class="fa-solid fa-user-doctor me-2"></i>Our Specialists</div>
+      <div class="section-divider mx-auto"></div>
+      <h2 class="section-title">Meet Our <span>Expert Doctors</span></h2>
+      <p class="section-sub mx-auto mt-3">Our team of certified specialists is dedicated to delivering the highest standard of care — anytime, anywhere.</p>
+    </div>
+    <div class="row g-4 justify-content-center">
+
+      <!-- 1. Dr. Varshant — Physiotherapist -->
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="doctor-card">
+          <div class="doctor-avatar-placeholder"><i class="fa-solid fa-person-walking"></i></div>
+          <div class="doctor-name">Dr. Varshant</div>
+          <div class="doctor-spec"><i class="fa-solid fa-dumbbell me-1"></i>Physiotherapist</div>
+          <div class="doctor-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+            <span style="color:var(--text);font-size:.8rem;margin-left:4px;">4.8</span>
+          </div>
+          <p class="doctor-desc">Expert in musculoskeletal rehabilitation, sports injury recovery, and post-operative physical therapy. Helping patients regain strength and mobility.</p>
+          <div class="doctor-meta">
+            <div class="doctor-meta-item"><div class="val">8+</div><div class="key">Yrs Exp</div></div>
+            <div class="doctor-meta-item"><div class="val">1.2K+</div><div class="key">Patients</div></div>
+            <div class="doctor-meta-item"><div class="val">98%</div><div class="key">Recovery</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Dr. Rajveer Singh Chouhan — General Surgeon -->
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="doctor-card">
+          <div class="doctor-avatar-placeholder"><i class="fa-solid fa-scalpel"></i></div>
+          <div class="doctor-name">Dr. Rajveer Singh Chouhan</div>
+          <div class="doctor-spec"><i class="fa-solid fa-scalpel me-1"></i>General Surgeon</div>
+          <div class="doctor-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <span style="color:var(--text);font-size:.8rem;margin-left:4px;">5.0</span>
+          </div>
+          <p class="doctor-desc">Highly skilled in laparoscopic, abdominal, and emergency surgeries. Known for precision techniques and excellent patient outcomes with minimal recovery time.</p>
+          <div class="doctor-meta">
+            <div class="doctor-meta-item"><div class="val">12+</div><div class="key">Yrs Exp</div></div>
+            <div class="doctor-meta-item"><div class="val">3K+</div><div class="key">Surgeries</div></div>
+            <div class="doctor-meta-item"><div class="val">99%</div><div class="key">Success</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Dr. Abhishek — Cardiologist -->
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="doctor-card">
+          <div class="doctor-avatar-placeholder">
+            <i class="fa-solid fa-heart-pulse"></i>
+          </div>
+          <div class="doctor-name">Dr. Abhishek</div>
+          <div class="doctor-spec"><i class="fa-solid fa-heart me-1"></i>Cardiologist</div>
+          <div class="doctor-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+            <span style="color:var(--text);font-size:.8rem;margin-left:4px;">4.9</span>
+          </div>
+          <p class="doctor-desc">Specialist in interventional cardiology, heart disease prevention, and cardiac rehabilitation. Committed to keeping your heart healthy at every stage of life.</p>
+          <div class="doctor-meta">
+            <div class="doctor-meta-item"><div class="val">10+</div><div class="key">Yrs Exp</div></div>
+            <div class="doctor-meta-item"><div class="val">2K+</div><div class="key">Patients</div></div>
+            <div class="doctor-meta-item"><div class="val">97%</div><div class="key">Positive</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Dr. Priya Sharma — Gynecologist -->
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="doctor-card">
+          <div class="doctor-avatar-placeholder"><i class="fa-solid fa-venus"></i></div>
+          <div class="doctor-name">Dr. Priya Sharma</div>
+          <div class="doctor-spec"><i class="fa-solid fa-ribbon me-1"></i>Gynecologist</div>
+          <div class="doctor-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <span style="color:var(--text);font-size:.8rem;margin-left:4px;">5.0</span>
+          </div>
+          <p class="doctor-desc">Dedicated to women's health with expertise in prenatal care, high-risk pregnancies, and reproductive medicine. A compassionate and trusted specialist.</p>
+          <div class="doctor-meta">
+            <div class="doctor-meta-item"><div class="val">14+</div><div class="key">Yrs Exp</div></div>
+            <div class="doctor-meta-item"><div class="val">4K+</div><div class="key">Patients</div></div>
+            <div class="doctor-meta-item"><div class="val">99%</div><div class="key">Satisfaction</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Dr. Arjun Mehta — Neurologist -->
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="doctor-card">
+          <div class="doctor-avatar-placeholder"><i class="fa-solid fa-brain"></i></div>
+          <div class="doctor-name">Dr. Arjun Mehta</div>
+          <div class="doctor-spec"><i class="fa-solid fa-brain me-1"></i>Neurologist</div>
+          <div class="doctor-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+            <span style="color:var(--text);font-size:.8rem;margin-left:4px;">4.7</span>
+          </div>
+          <p class="doctor-desc">Specializes in diagnosing and treating disorders of the brain, spine, and nervous system including epilepsy, migraines, Parkinson's, and stroke management.</p>
+          <div class="doctor-meta">
+            <div class="doctor-meta-item"><div class="val">11+</div><div class="key">Yrs Exp</div></div>
+            <div class="doctor-meta-item"><div class="val">1.8K+</div><div class="key">Patients</div></div>
+            <div class="doctor-meta-item"><div class="val">96%</div><div class="key">Success</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Dr. Sneha Patel — Dermatologist -->
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="doctor-card">
+          <div class="doctor-avatar-placeholder"><i class="fa-solid fa-hand-sparkles"></i></div>
+          <div class="doctor-name">Dr. Sneha Patel</div>
+          <div class="doctor-spec"><i class="fa-solid fa-spa me-1"></i>Dermatologist</div>
+          <div class="doctor-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+            <span style="color:var(--text);font-size:.8rem;margin-left:4px;">4.8</span>
+          </div>
+          <p class="doctor-desc">Expert in clinical and cosmetic dermatology including acne, eczema, psoriasis, hair loss, and advanced skin care treatments for all skin types.</p>
+          <div class="doctor-meta">
+            <div class="doctor-meta-item"><div class="val">9+</div><div class="key">Yrs Exp</div></div>
+            <div class="doctor-meta-item"><div class="val">3.5K+</div><div class="key">Patients</div></div>
+            <div class="doctor-meta-item"><div class="val">98%</div><div class="key">Happy</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Dr. Rohan Verma — Orthopedic Surgeon -->
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="doctor-card">
+          <div class="doctor-avatar-placeholder"><i class="fa-solid fa-bone"></i></div>
+          <div class="doctor-name">Dr. Rohan Verma</div>
+          <div class="doctor-spec"><i class="fa-solid fa-bone me-1"></i>Orthopedic Surgeon</div>
+          <div class="doctor-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <span style="color:var(--text);font-size:.8rem;margin-left:4px;">4.9</span>
+          </div>
+          <p class="doctor-desc">Expert in joint replacements, sports injuries, spinal disorders, and fracture management. Uses the latest minimally invasive surgical techniques for faster healing.</p>
+          <div class="doctor-meta">
+            <div class="doctor-meta-item"><div class="val">13+</div><div class="key">Yrs Exp</div></div>
+            <div class="doctor-meta-item"><div class="val">2.5K+</div><div class="key">Surgeries</div></div>
+            <div class="doctor-meta-item"><div class="val">99%</div><div class="key">Recovery</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. Dr. Kavita Nair — Pediatrician -->
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="doctor-card">
+          <div class="doctor-avatar-placeholder"><i class="fa-solid fa-baby"></i></div>
+          <div class="doctor-name">Dr. Kavita Nair</div>
+          <div class="doctor-spec"><i class="fa-solid fa-baby me-1"></i>Pediatrician</div>
+          <div class="doctor-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <span style="color:var(--text);font-size:.8rem;margin-left:4px;">5.0</span>
+          </div>
+          <p class="doctor-desc">Warm and experienced child specialist focusing on newborn care, growth development, vaccinations, and treating childhood infections and illnesses with gentle expertise.</p>
+          <div class="doctor-meta">
+            <div class="doctor-meta-item"><div class="val">10+</div><div class="key">Yrs Exp</div></div>
+            <div class="doctor-meta-item"><div class="val">5K+</div><div class="key">Children</div></div>
+            <div class="doctor-meta-item"><div class="val">100%</div><div class="key">Care</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. Dr. Siddharth Joshi — Ophthalmologist -->
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="doctor-card">
+          <div class="doctor-avatar-placeholder"><i class="fa-solid fa-eye"></i></div>
+          <div class="doctor-name">Dr. Siddharth Joshi</div>
+          <div class="doctor-spec"><i class="fa-solid fa-eye me-1"></i>Ophthalmologist</div>
+          <div class="doctor-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+            <span style="color:var(--text);font-size:.8rem;margin-left:4px;">4.8</span>
+          </div>
+          <p class="doctor-desc">Specialist in cataract surgery, LASIK, retinal disorders, and glaucoma management. Restoring and preserving vision with cutting-edge eye care technology.</p>
+          <div class="doctor-meta">
+            <div class="doctor-meta-item"><div class="val">11+</div><div class="key">Yrs Exp</div></div>
+            <div class="doctor-meta-item"><div class="val">2.2K+</div><div class="key">Patients</div></div>
+            <div class="doctor-meta-item"><div class="val">98%</div><div class="key">Vision OK</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. Dr. Meera Iyer — Psychiatrist -->
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="doctor-card">
+          <div class="doctor-avatar-placeholder"><i class="fa-solid fa-comment-medical"></i></div>
+          <div class="doctor-name">Dr. Meera Iyer</div>
+          <div class="doctor-spec"><i class="fa-solid fa-brain me-1"></i>Psychiatrist</div>
+          <div class="doctor-stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+            <span style="color:var(--text);font-size:.8rem;margin-left:4px;">4.9</span>
+          </div>
+          <p class="doctor-desc">Compassionate mental health specialist treating anxiety, depression, PTSD, bipolar disorder, and stress-related conditions through therapy and evidence-based care.</p>
+          <div class="doctor-meta">
+            <div class="doctor-meta-item"><div class="val">9+</div><div class="key">Yrs Exp</div></div>
+            <div class="doctor-meta-item"><div class="val">1.5K+</div><div class="key">Patients</div></div>
+            <div class="doctor-meta-item"><div class="val">97%</div><div class="key">Improved</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ LOGIN ═══════════════ -->
+<section id="login">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-5 reveal">
+        <div class="form-section">
+          <div class="text-center mb-4">
+            <div style="width:72px;height:72px;border-radius:20px;background:rgba(0,201,167,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+              <i class="fa-solid fa-right-to-bracket" style="font-size:1.8rem;color:var(--teal);"></i>
+            </div>
+            <div class="form-title">Welcome <span>Back</span></div>
+            <p style="color:var(--text);font-size:.9rem;">Sign in to your MediCare+ account</p>
+          </div>
+          <div class="mb-4">
+            <label>Username / Email</label>
+            <div class="input-icon">
+              <i class="fa-solid fa-user"></i>
+              <input type="text" id="loginUser" class="form-control" placeholder="Enter your username"/>
+            </div>
+            <div class="error-msg" id="loginUserErr">⚠ Please enter your username.</div>
+          </div>
+          <div class="mb-4">
+            <label>Password</label>
+            <div class="input-icon">
+              <i class="fa-solid fa-lock"></i>
+              <input type="password" id="loginPass" class="form-control" placeholder="Enter your password"/>
+            </div>
+            <div class="error-msg" id="loginPassErr">⚠ Password must be at least 6 characters.</div>
+          </div>
+          <button class="btn-submit mt-2" onclick="validateLogin()">
+            <i class="fa-solid fa-sign-in-alt me-2"></i>Login to Dashboard
+          </button>
+          <div class="success-banner" id="loginSuccess">
+            <i class="fa-solid fa-circle-check me-2"></i>Login Successful! Redirecting...
+          </div>
+          <p class="text-center mt-4" style="color:var(--text);font-size:.88rem;">
+            Don't have an account? <a href="#register" style="color:var(--teal);font-weight:700;text-decoration:none;">Register Now</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ REGISTER ═══════════════ -->
+<section id="register" style="background:#081020;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 reveal">
+        <div class="form-section">
+          <div class="text-center mb-4">
+            <div style="width:72px;height:72px;border-radius:20px;background:rgba(0,201,167,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+              <i class="fa-solid fa-user-plus" style="font-size:1.8rem;color:var(--teal);"></i>
+            </div>
+            <div class="form-title">Create <span>Account</span></div>
+            <p style="color:var(--text);font-size:.9rem;">Join 50,000+ patients on MediCare+</p>
+          </div>
+          <div class="row g-3">
+            <div class="col-12">
+              <label>Full Name</label>
+              <div class="input-icon">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" id="regName" class="form-control" placeholder="Your full name"/>
+              </div>
+              <div class="error-msg" id="regNameErr">⚠ Please enter your name.</div>
+            </div>
+            <div class="col-12">
+              <label>Email Address</label>
+              <div class="input-icon">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="regEmail" class="form-control" placeholder="example@email.com"/>
+              </div>
+              <div class="error-msg" id="regEmailErr">⚠ Please enter a valid email address.</div>
+            </div>
+            <div class="col-md-6">
+              <label>Password</label>
+              <div class="input-icon">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="regPass" class="form-control" placeholder="Min. 6 characters"/>
+              </div>
+              <div class="error-msg" id="regPassErr">⚠ Minimum 6 characters required.</div>
+            </div>
+            <div class="col-md-6">
+              <label>Confirm Password</label>
+              <div class="input-icon">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="regConfirm" class="form-control" placeholder="Repeat password"/>
+              </div>
+              <div class="error-msg" id="regConfirmErr">⚠ Passwords do not match.</div>
+            </div>
+          </div>
+          <button class="btn-submit mt-4" onclick="validateRegister()">
+            <i class="fa-solid fa-user-check me-2"></i>Create My Account
+          </button>
+          <div class="success-banner" id="registerSuccess">
+            <i class="fa-solid fa-circle-check me-2"></i>Account Created Successfully! Welcome to MediCare+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FEEDBACK ═══════════════ -->
+<section id="feedback">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-5 reveal">
+        <div class="section-badge"><i class="fa-solid fa-comments me-2"></i>Contact Us</div>
+        <div class="section-divider"></div>
+        <h2 class="section-title">We Value Your <span>Feedback</span></h2>
+        <p class="section-sub mt-4">Share your experience or ask us anything. Our team responds within 24 hours.</p>
+        <div class="mt-4 d-flex flex-column gap-3">
+          <div class="d-flex align-items-center gap-3">
+            <div style="width:44px;height:44px;border-radius:12px;background:rgba(0,201,167,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fa-solid fa-phone" style="color:var(--teal);"></i>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:.9rem;">Emergency Helpline</div>
+              <div style="color:var(--teal);font-weight:800;">1800-MED-CARE</div>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-3">
+            <div style="width:44px;height:44px;border-radius:12px;background:rgba(0,201,167,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fa-solid fa-envelope" style="color:var(--teal);"></i>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:.9rem;">Support Email</div>
+              <div style="color:var(--teal);font-weight:800;">support@medicareplus.in</div>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-3">
+            <div style="width:44px;height:44px;border-radius:12px;background:rgba(0,201,167,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fa-solid fa-location-dot" style="color:var(--teal);"></i>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:.9rem;">Head Office</div>
+              <div style="color:var(--text);font-size:.9rem;">Science City Road, Ahmedabad, Gujarat</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7 reveal">
+        <div class="form-section">
+          <div class="form-title mb-4">Send <span>Message</span></div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label>Your Name</label>
+              <div class="input-icon">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" id="fbName" class="form-control" placeholder="Full name"/>
+              </div>
+              <div class="error-msg" id="fbNameErr">⚠ Please enter your name.</div>
+            </div>
+            <div class="col-md-6">
+              <label>Your Email</label>
+              <div class="input-icon">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="fbEmail" class="form-control" placeholder="Email address"/>
+              </div>
+              <div class="error-msg" id="fbEmailErr">⚠ Please enter a valid email.</div>
+            </div>
+            <div class="col-12">
+              <label>Message</label>
+              <div class="input-icon-top" style="position:relative;">
+                <i class="fa-solid fa-message"></i>
+                <textarea id="fbMsg" class="form-control" rows="5" placeholder="Write your message here..." style="padding-left:44px!important;resize:none;"></textarea>
+              </div>
+              <div class="error-msg" id="fbMsgErr">⚠ Message must be at least 10 characters.</div>
+            </div>
+          </div>
+          <button class="btn-submit mt-4" onclick="validateFeedback()">
+            <i class="fa-solid fa-paper-plane me-2"></i>Send Feedback
+          </button>
+          <div class="success-banner" id="feedbackSuccess">
+            <i class="fa-solid fa-circle-check me-2"></i>Thank you! Your message has been sent successfully.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <div class="container">
+    <div class="row g-5 mb-5">
+      <div class="col-lg-4">
+        <div class="footer-logo"><i class="fa-solid fa-heart-pulse me-2"></i>MediCare+</div>
+        <p style="color:var(--text);font-size:.9rem;line-height:1.8;margin-top:16px;max-width:280px;">Your trusted digital health partner. Quality care, anytime, anywhere across India.</p>
+        <div class="mt-4">
+          <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-2 col-6">
+        <div style="font-weight:800;margin-bottom:16px;font-size:.95rem;">Quick Links</div>
+        <a href="#home" class="footer-link">Home</a>
+        <a href="#about" class="footer-link">About Us</a>
+        <a href="#services" class="footer-link">Services</a>
+        <a href="#feedback" class="footer-link">Contact</a>
+      </div>
+      <div class="col-lg-2 col-6">
+        <div style="font-weight:800;margin-bottom:16px;font-size:.95rem;">Services</div>
+        <a href="#services" class="footer-link">Appointments</a>
+        <a href="#services" class="footer-link">Video Consult</a>
+        <a href="#services" class="footer-link">Emergency SOS</a>
+        <a href="#services" class="footer-link">Health Records</a>
+      </div>
+      <div class="col-lg-4">
+        <div style="font-weight:800;margin-bottom:16px;font-size:.95rem;">Emergency Numbers</div>
+        <div style="background:rgba(255,77,109,.08);border:1px solid rgba(255,77,109,.2);border-radius:14px;padding:16px;">
+          <div class="d-flex justify-content-between mb-2">
+            <span style="color:var(--text);font-size:.88rem;">Ambulance</span>
+            <span style="color:var(--danger);font-weight:800;">108</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span style="color:var(--text);font-size:.88rem;">Police</span>
+            <span style="color:var(--danger);font-weight:800;">100</span>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span style="color:var(--text);font-size:.88rem;">MediCare+ SOS</span>
+            <span style="color:var(--teal);font-weight:800;">1800-MED</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr style="border-color:rgba(0,201,167,.15);"/>
+    <div class="d-flex flex-wrap justify-content-between align-items-center pt-3 gap-3">
+      <p style="color:var(--text);font-size:.85rem;margin:0;">
+        &copy; 2025 <span style="color:var(--teal);font-weight:700;">MediCare+ Digital Healthcare</span>. All rights reserved.
+      </p>
+      <p style="color:var(--text);font-size:.8rem;margin:0;">
+        Designed for IT Workshop | Ganpat University
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ── PARTICLES ──
+(function(){
+  const container = document.getElementById('particles');
+  for(let i=0;i<18;i++){
+    const p = document.createElement('div');
+    const size = Math.random()*80+20;
+    p.className = 'particle';
+    p.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;top:${Math.random()*100}%;
+      animation-duration:${Math.random()*10+8}s;
+      animation-delay:${Math.random()*5}s;
+      opacity:${Math.random()*0.3+0.05};
+    `;
+    container.appendChild(p);
+  }
+})();
+
+// ── NAVBAR SCROLL ──
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  // Active nav
+  const sections = ['home','about','services','doctors','login','register','feedback'];
+  let current = '';
+  sections.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && window.scrollY >= el.offsetTop-200) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(l=>{
+    l.classList.toggle('active', l.getAttribute('href')==='#'+current);
+  });
+});
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+},{threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// ── COUNTERS ──
+function animateCounter(el, target){
+  let current=0;
+  const step = Math.ceil(target/80);
+  const timer = setInterval(()=>{
+    current = Math.min(current+step, target);
+    el.textContent = current.toLocaleString();
+    if(current>=target) clearInterval(timer);
+  },20);
+}
+const counterObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('[data-target]').forEach(el=>{
+        animateCounter(el, parseInt(el.dataset.target));
+      });
+      counterObs.disconnect();
+    }
+  });
+},{threshold:0.3});
+const counterSection = document.querySelector('.counter-section');
+if(counterSection) counterObs.observe(counterSection);
+
+// ── HELPERS ──
+function showErr(id, show){ document.getElementById(id).style.display = show ? 'block':'none'; }
+function val(id){ return document.getElementById(id).value.trim(); }
+function emailOk(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+function showSuccess(id){
+  const el = document.getElementById(id);
+  el.style.display='block';
+  setTimeout(()=>el.style.display='none', 4000);
+}
+
+// ── LOGIN VALIDATION ──
+function validateLogin(){
+  let ok = true;
+  const u = val('loginUser'), p = val('loginPass');
+  showErr('loginUserErr', !u); if(!u) ok=false;
+  showErr('loginPassErr', p.length<6); if(p.length<6) ok=false;
+  if(ok) showSuccess('loginSuccess');
+}
+
+// ── REGISTER VALIDATION ──
+function validateRegister(){
+  let ok = true;
+  const n=val('regName'), e=val('regEmail'), p=val('regPass'), c=val('regConfirm');
+  showErr('regNameErr', !n); if(!n) ok=false;
+  showErr('regEmailErr', !emailOk(e)); if(!emailOk(e)) ok=false;
+  showErr('regPassErr', p.length<6); if(p.length<6) ok=false;
+  showErr('regConfirmErr', p!==c || !c); if(p!==c||!c) ok=false;
+  if(ok) showSuccess('registerSuccess');
+}
+
+// ── FEEDBACK VALIDATION ──
+function validateFeedback(){
+  let ok = true;
+  const n=val('fbName'), e=val('fbEmail'), m=val('fbMsg');
+  showErr('fbNameErr', !n); if(!n) ok=false;
+  showErr('fbEmailErr', !emailOk(e)); if(!emailOk(e)) ok=false;
+  showErr('fbMsgErr', m.length<10); if(m.length<10) ok=false;
+  if(ok) showSuccess('feedbackSuccess');
+}
+
+// ── REAL-TIME INPUT BORDER FEEDBACK ──
+document.querySelectorAll('.form-control').forEach(input=>{
+  input.addEventListener('input',function(){
+    this.style.borderColor = this.value.trim() ? 'rgba(0,201,167,.5)' : 'rgba(0,201,167,.2)';
+  });
+});
+</script>
+</body>
+</html>
